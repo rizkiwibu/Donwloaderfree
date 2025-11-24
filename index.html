@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Downloader Free 🚀 - All-in-One Downloader</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        /* Variabel CSS untuk Mode Terang */
+        :root {
+            --primary-color: #007bff;
+            --success-color: #28a745;
+            --bg-color: #f8f9fa;
+            --card-bg: #ffffff;
+            --result-bg: #e6f2ff;
+            --text-color: #343a40;
+            --secondary-text: #6c757d;
+            --border-color: #e9ecef;
+            --danger-color: #dc3545;
+        }
+
+        /* Variabel CSS untuk Mode Gelap */
+        .dark-mode {
+            --primary-color: #79a6ff; /* Biru lebih terang di dark mode */
+            --success-color: #38c15a;
+            --bg-color: #1a1a2e; /* Biru gelap */
+            --card-bg: #272740; /* Kartu gelap */
+            --result-bg: #30304a;
+            --text-color: #e0e0e0;
+            --secondary-text: #a0a0a0;
+            --border-color: #3b3b55;
+            --danger-color: #ff6b6b;
+        }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            transition: background-color 0.3s, color 0.3s;
+        }
+        
+        .container {
+            max-width: 900px;
+            margin: 40px auto;
+            background: var(--card-bg);
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            transition: background 0.3s, box-shadow 0.3s;
+        }
+        
+        /* Dark Mode shadow adjustment */
+        .dark-mode .container {
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+        }
+
+        /* --- Mode Toggle Button --- */
+        .mode-toggle {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            padding: 10px 15px;
+            background-color: var(--card-bg);
+            color: var(--primary-color);
+            border: 1px solid var(--border-color);
+            border-radius: 50px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            transition: background-color 0.3s, color 0.3s, border-color 0.3s;
+        }
+        .mode-toggle:hover {
+            background-color: var(--border-color);
+        }
+
+        h1 {
+            color: var(--primary-color);
+            text-align: center;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+        
+        .input-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+        
+        #urlInput {
+            flex-grow: 1;
+            padding: 15px 20px;
+            border: 2px solid var(--border-color);
+            border-radius: 10px;
+            font-size: 16px;
+            background-color: var(--card-bg);
+            color: var(--text-color);
+            transition: border-color 0.3s, box-shadow 0.3s;
+        }
+        
+        #urlInput:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.25);
+            outline: none;
+        }
+        
+        #downloadButton {
+            padding: 15px 30px;
+            background-color: var(--success-color);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            transition: background-color 0.3s, transform 0.1s;
+        }
+        
+        #downloadButton:hover {
+            background-color: #1e7e34;
+            transform: translateY(-2px);
+        }
+
+        #downloadButton:disabled {
+            background-color: var(--secondary-text);
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        #resultArea {
+            margin-top: 20px;
+            padding: 25px;
+            border: 1px dashed var(--primary-color);
+            border-radius: 10px;
+            background-color: var(--result-bg);
+            min-height: 120px;
+            transition: background-color 0.3s, border-color 0.3s;
+        }
+
+        #resultArea h3 {
+            color: var(--primary-color);
+            border-bottom: 2px solid var(--primary-color);
+            padding-bottom: 10px;
+            margin-top: 0;
+        }
+
+        .thumbnail-box {
+            text-align: center; 
+            margin: 15px 0;
+            padding: 10px;
+            background: rgba(0, 0, 0, 0.05); /* Latar belakang thumbnail */
+            border-radius: 8px;
+        }
+
+        .dark-mode .thumbnail-box {
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .thumbnail-box img {
+            max-width: 100%; 
+            height: auto; 
+            border-radius: 8px; 
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+
+        .media-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin: 10px 0;
+            padding: 15px;
+            background-color: var(--card-bg);
+            border-left: 5px solid var(--success-color);
+            border-radius: 8px;
+            text-decoration: none;
+            color: var(--text-color);
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+            transition: background-color 0.2s, box-shadow 0.3s;
+        }
+        
+        .dark-mode .media-item {
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+        }
+
+        .media-item:hover {
+            background-color: var(--border-color);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .download-btn-link {
+            background-color: var(--success-color);
+            color: white;
+            padding: 10px 18px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-size: 0.9em;
+            font-weight: 600;
+            transition: background-color 0.3s;
+            white-space: nowrap; /* Mencegah tombol putus baris */
+        }
+
+        .download-btn-link:hover {
+            background-color: #1e7e34;
+        }
+
+        .error-message {
+            color: var(--danger-color);
+            font-weight: 600;
+            text-align: center;
+            padding: 10px;
+            background-color: #f8d7da;
+            border-radius: 8px;
+        }
+        
+        .dark-mode .error-message {
+            background-color: #58151c;
+            color: var(--danger-color);
+        }
+
+        .support-list {
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid var(--border-color);
+        }
+        
+        /* ... CSS untuk supported-grid dan footer tetap sama ... */
+
+        .supported-grid {
+            list-style: none;
+            padding: 0;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+            gap: 10px;
+        }
+        
+        .supported-grid li {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 8px;
+            border-radius: 6px;
+            font-size: 0.85em;
+            text-align: center;
+            box-shadow: 0 2px 5px rgba(0, 123, 255, 0.3);
+            transition: transform 0.2s;
+        }
+
+        .supported-grid li:hover {
+            transform: scale(1.05);
+        }
+        
+        .footer {
+            margin-top: 30px;
+            padding: 20px;
+            text-align: center;
+            font-size: 0.9em;
+            color: var(--secondary-text);
+        }
+        
+        .footer a {
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 600;
+        }
+        
+        /* Responsif */
+        @media (max-width: 600px) {
+            .container {
+                margin: 20px;
+                padding: 20px;
+            }
+            .input-group {
+                flex-direction: column;
+            }
+            #downloadButton {
+                width: 100%;
+            }
+            .mode-toggle {
+                top: 10px;
+                right: 10px;
+            }
+            .media-item {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <button id="modeToggle" class="mode-toggle">☀️ Mode Gelap</button>
+
+    <div class="container">
+        <h1>Downloader Free 🚀</h1>
+        <p style="text-align: center; color: var(--secondary-text);">Cepat & Mudah! Unduh media dari berbagai platform sosial hanya dengan tautan.</p>
+
+        <div class="input-group">
+            <input type="text" id="urlInput" placeholder="Tempel tautan video/media di sini..." required>
+            <button id="downloadButton">⬇️ Proses Download</button>
+        </div>
+
+        <div id="resultArea">
+            <p style="text-align: center; color: var(--secondary-text);">Masukkan tautan di atas untuk memulai...</p>
+        </div>
+
+        <div class="support-list">
+            <h2>Layanan yang Didukung (50+ Platform) 🌐</h2>
+            <ul class="supported-grid" id="supportedServices">
+                </ul>
+        </div>
+    </div>
+
+    <div class="footer">
+        <p>Created by Riski</p>
+        <p>
+            Instagram: <a href="https://www.instagram.com/ikykunnnn?igsh=MXBjMHYzdzJuN2xxdA==" target="_blank">@ikykunnnn</a> |
+            WhatsApp: <a href="https://wa.me/6285878836361" target="_blank">+62 858-7883-6361</a>
+        </p>
+    </div>
+
+    <script>
+        const API_ENDPOINT = 'https://aiodonwloader.rizk.qzz.io/';
+        const supportedServices = [
+            "Tiktok", "Douyin", "Capcut", "Threads", "Instagram", "Facebook", "Espn", "Pinterest", 
+            "Imdb", "Imgur", "Ifunny", "Izlesene", "Reddit", "Youtube", "Twitter", "Vimeo", 
+            "Snapchat", "Bilibili", "Dailymotion", "Sharechat", "Likee", "Linkedin", "Tumblr", 
+            "Hipi", "Telegram", "Getstickerpack", "Bitchute", "Febspot", "9GAG", "Ok.ru", 
+            "Rumble", "Streamable", "Ted", "SohuTv", "Xvideos", "Xnxx", "Xiaohongshu", "Ixigua", 
+            "Weibo", "Miaopai", "Meipai", "Xiaoying", "National Video", "Yingke", "Sina", 
+            "Vk-vkvideo", "Soundcloud", "Mixcloud", "Spotify", "Zingmp3", "Bandcamp"
+        ];
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const urlInput = document.getElementById('urlInput');
+            const downloadButton = document.getElementById('downloadButton');
+            const resultArea = document.getElementById('resultArea');
+            const supportedServicesList = document.getElementById('supportedServices');
+            const modeToggle = document.getElementById('modeToggle');
+
+            // --- FUNGSI MODE GELAP ---
+            function setDarkMode(isDark) {
+                if (isDark) {
+                    document.body.classList.add('dark-mode');
+                    modeToggle.innerHTML = '🌙 Mode Cerah';
+                    localStorage.setItem('theme', 'dark');
+                } else {
+                    document.body.classList.remove('dark-mode');
+                    modeToggle.innerHTML = '☀️ Mode Gelap';
+                    localStorage.setItem('theme', 'light');
+                }
+            }
+
+            // Cek preferensi user saat loading
+            const savedTheme = localStorage.getItem('theme');
+            if (savedTheme === 'dark' || (!savedTheme && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+                setDarkMode(true);
+            } else {
+                setDarkMode(false);
+            }
+
+            // Event listener untuk tombol toggle
+            modeToggle.addEventListener('click', () => {
+                const isDark = document.body.classList.contains('dark-mode');
+                setDarkMode(!isDark);
+            });
+            // --- END FUNGSI MODE GELAP ---
+
+
+            // Mengisi daftar layanan yang didukung (Grid)
+            supportedServices.forEach(service => {
+                const li = document.createElement('li');
+                li.textContent = service;
+                supportedServicesList.appendChild(li);
+            });
+
+            downloadButton.addEventListener('click', handleDownload);
+
+            // Mendukung Enter key
+            urlInput.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') {
+                    handleDownload();
+                }
+            });
+
+            async function handleDownload() {
+                const url = urlInput.value.trim();
+                if (!url) {
+                    resultArea.innerHTML = '<p class="error-message">❌ Mohon masukkan tautan yang ingin diunduh.</p>';
+                    return;
+                }
+
+                resultArea.innerHTML = '<p style="text-align: center; color: var(--secondary-text);">⏳ **Sedang memproses...** Mohon tunggu beberapa saat.</p>';
+                downloadButton.disabled = true;
+
+                const apiUrl = `${API_ENDPOINT}?url=${encodeURIComponent(url)}`;
+
+                try {
+                    const response = await fetch(apiUrl);
+                    const data = await response.json();
+
+                    if (data.status === true && data.result && !data.result.error) {
+                        displayResults(data.result);
+                    } else {
+                        const errorMessage = data.result && data.result.error_message ? data.result.error_message : "Tautan tidak valid atau terjadi kesalahan pada API. Cek apakah tautan Anda benar dan didukung.";
+                        resultArea.innerHTML = `<p class="error-message">❌ Gagal mendapatkan data: ${errorMessage}</p>`;
+                    }
+                } catch (error) {
+                    console.error('Error fetching data:', error);
+                    resultArea.innerHTML = `<p class="error-message">⚠️ Terjadi kesalahan koneksi atau server: ${error.message}</p>`;
+                } finally {
+                    downloadButton.disabled = false;
+                }
+            }
+
+            function displayResults(result) {
+                let html = `
+                    <h3>✅ Media Ditemukan!</h3>
+                    <p><strong>Sumber:</strong> ${result.source || 'Tidak Diketahui'}</p>
+                    <p><strong>Judul:</strong> ${result.title ? result.title.substring(0, 100) + (result.title.length > 100 ? '...' : '') : 'Tidak Ada Judul'}</p>
+                `;
+                
+                // --- TAMBAHAN THUMBNAIL ---
+                if (result.thumbnail) {
+                    html += `
+                        <div class="thumbnail-box">
+                            <img src="${result.thumbnail}" alt="Thumbnail Media" loading="lazy">
+                        </div>
+                    `;
+                }
+                // --- END TAMBAHAN THUMBNAIL ---
+
+                html += '<h4>Pilih Kualitas Download:</h4>';
+                
+                let hasMedia = false;
+                if (result.medias && result.medias.length > 0) {
+                    hasMedia = true;
+                    result.medias.forEach(media => {
+                        let icon = '🔗';
+                        if (media.type.toLowerCase().includes('audio') || media.extension === 'mp3') {
+                            icon = '🎧 AUDIO';
+                        } else if (media.type.toLowerCase().includes('video') || media.extension === 'mp4') {
+                             icon = '🎥 VIDEO';
+                        } else if (media.type.toLowerCase().includes('image') || media.extension === 'jpg') {
+                             icon = '🖼️ GAMBAR';
+                        }
+
+                        // Menghilangkan underscore dan mengganti dengan spasi untuk kualitas
+                        const qualityText = media.quality ? `(${media.quality.replace(/_/g, ' ')})` : '';
+
+                        const label = `${icon} ${qualityText} - ${media.extension ? media.extension.toUpperCase() : 'File'}`;
+
+                        const mediaItemHtml = `
+                            <div class="media-item">
+                                <span>${label}</span>
+                                <a href="${media.url}" class="download-btn-link" target="_blank" download>
+                                    Download Sekarang
+                                </a>
+                            </div>
+                        `;
+                        html += mediaItemHtml;
+                    });
+                }
+
+                if (!hasMedia) {
+                    html += '<p>Tidak ditemukan opsi media yang dapat diunduh (video/audio/foto) dari tautan ini.</p>';
+                }
+
+                resultArea.innerHTML = html;
+            }
+        });
+    </script>
+
+</body>
+</html>
